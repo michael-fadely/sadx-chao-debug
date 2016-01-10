@@ -1,4 +1,4 @@
-// TODO: Allow selection of Chao by index.
+// TODO: Fix shape drawing.
 #include "stdafx.h"
 #include "ChaoStructs.h"
 
