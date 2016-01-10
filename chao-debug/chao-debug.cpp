@@ -92,7 +92,8 @@ extern "C"
 
 		if (ChaoDebug_Buttons & Buttons_Start)
 		{
-			debugMenuEnabled = !debugMenuEnabled;
+			if ((debugMenuEnabled = !debugMenuEnabled))
+				DisableChao();
 			SetDebugControl(debugMenuEnabled);
 		}
 
@@ -155,9 +156,11 @@ extern "C"
 		}
 		else if (buttons & Buttons_A)
 		{
-			EnableChao();
-			menu = selection;
-			debugData.CurrentMenu = 0;
+			if (ChaoDebugFunctions[selection].Enabled)
+			{
+				menu = selection;
+				debugData.CurrentMenu = 0;
+			}
 		}
 		else if (buttons & Buttons_B)
 		{
