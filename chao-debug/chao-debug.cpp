@@ -4,6 +4,7 @@
 
 #define EXPORT __declspec(dllexport)
 
+// TODO: Move this stuff ot the mod loader?
 FunctionPointer(void, SetChaoDebugFunction_Disabled, (void(__cdecl *object_function)(ObjectMaster *_this), char *name), 0x00731E00);
 FunctionPointer(void, SetChaoDebugFunction_Enabled, (void(__cdecl *object_function)(ObjectMaster *_this), char *name), 0x00731E40);
 DataPointer(int, ChaoDebug_EntryCount, 0x03CE01A8);

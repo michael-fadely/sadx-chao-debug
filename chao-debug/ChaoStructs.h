@@ -97,7 +97,7 @@ struct ChaoData1
 #pragma pack(pop)
 
 #pragma pack(push, 1)
-struct __declspec(align(2)) ChaoDebugFunction
+struct ChaoDebugFunction
 {
 	int Enabled;
 	void(__cdecl *Function)(ObjectMaster *_this);
