@@ -158,6 +158,7 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ChaoEnums.h" />
     <ClInclude Include="ChaoStructs.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>

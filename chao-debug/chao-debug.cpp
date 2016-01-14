@@ -18,7 +18,7 @@ FunctionPointer(int, GetCurrentChaoStage, (void), 0x00715140);
 FunctionPointer(ObjectMaster*, GetChaoObject, (short idk, short index), 0x0071A1F0);
 
 static ObjectMaster dummy = {};
-static ChaoDebugData1 debugData = {};
+static ChaoData1 debugData = {};
 static bool debugControlEnabled = false;
 static bool debugMenuEnabled = false;
 static int selection = 0;
@@ -51,6 +51,8 @@ extern "C"
 	EXPORT ModInfo SADXModInfo = { ModLoaderVer };
 	EXPORT void Init()
 	{
+		assert(sizeof(EntityData1) == 0x40);
+		assert(sizeof(ChaoData1) == 0x1D88);
 		WriteJump(SetChaoDebugFunction_Disabled, SetChaoDebugFunction_Enabled);
 		dummy.Data1 = (CharObj1*)&debugData;
 	}
@@ -114,7 +116,7 @@ extern "C"
 
 		if (menu >= 0)
 		{
-			if (debugData.CurrentMenu == 1)
+			if (debugData.entity.Action == 1)
 			{
 				menu = -1;
 			}
@@ -134,16 +136,16 @@ extern "C"
 		{
 			ObjectMaster* chao = player->ObjectHeld;
 			ChaoData1* data1 = (ChaoData1*)chao->Data1;
-			debugData.ChaoID = data1->ChaoID;
+			debugData.entity.field_14 = data1->entity.Index;
 		}
 		else if (buttons & Buttons_Left)
 		{
-			if (--debugData.ChaoID < 0)	// TODO: GetChaoCount
-				debugData.ChaoID = 23;
+			if (--debugData.entity.field_14 < 0)	// TODO: GetChaoCount
+				debugData.entity.field_14 = 23;
 		}
 		else if (buttons & Buttons_Right)
 		{
-			++debugData.ChaoID %= 24; 	// TODO: GetChaoCount
+			++debugData.entity.field_14 %= 24; 	// TODO: GetChaoCount
 		}
 
 		if (buttons & Buttons_Up)
@@ -160,7 +162,7 @@ extern "C"
 			if (ChaoDebugFunctions[selection].Enabled)
 			{
 				menu = selection;
-				debugData.CurrentMenu = 0;
+				debugData.entity.Action = 0;
 			}
 		}
 		else if (buttons & Buttons_B)
@@ -170,7 +172,7 @@ extern "C"
 			return;
 		}
 
-		ObjectMaster* chao = GetChaoObject(0, debugData.ChaoID);
+		ObjectMaster* chao = GetChaoObject(0, debugData.entity.field_14);
 		bool isNullChao =
 			chao == nullptr || chao->Data1 == nullptr || ((ChaoData1*)chao->Data1)->ChaoDataBase_ptr == nullptr;
 
@@ -178,18 +180,20 @@ extern "C"
 			SetDebugFontColor(isNullChao ? 0xFFBF0000 : 0xFF00BF00);
 		else
 			SetDebugFontColor(0xFFBFBFBF);
-		DisplayDebugStringFormatted(NJM_LOCATION(6, (columns / 4) - 2), "< CHAO INDEX: %02d >", debugData.ChaoID);
+		DisplayDebugStringFormatted(NJM_LOCATION(6, (columns / 4) - 2), "< CHAO INDEX: %02d >", debugData.entity.field_14);
 		SetDebugFontColor(lastColor);
 
 		if (isNullChao)
 			return;
+
+		debugData.ChaoDataBase_ptr = ((ChaoData1*)chao->Data1)->ChaoDataBase_ptr;
 
 		for (Sint32 i = 0; i < ChaoDebug_EntryCount; i++)
 		{
 			ChaoDebugFunction* func = &ChaoDebugFunctions[i];
 
 			if (func->Enabled)
-				SetDebugFontColor((i == selection) ? 0xFFF9720A : 0xFFFFFFFF);
+				SetDebugFontColor((i == selection) ? 0xFFFF9F00 : 0xFFFFFFFF);
 			else
 				SetDebugFontColor(0xE07F7F7F);
 
