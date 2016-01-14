@@ -125,6 +125,7 @@ enum ChaoMedal : Sint8
 
 enum ChaoMouth : Sint8
 {
+	ChaoMouth_None = 0,
 	ChaoMouth_ToothySmile = 1,
 	ChaoMouth_Open = 2,
 	ChaoMouth_ClosedSmile = 3,

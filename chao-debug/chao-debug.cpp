@@ -1,21 +1,21 @@
 // TODO: Fix shape drawing.
 #include "stdafx.h"
+
+#include <SADXModLoader.h>
+#include <string>
+#include <cassert>
+
+#include "FunctionPointers.h"
+#include "CustomDebug.h"
 #include "ChaoStructs.h"
 
 #define EXPORT __declspec(dllexport)
 
-// TODO: Move this stuff ot the mod loader?
-FunctionPointer(void, SetChaoDebugFunction_Disabled, (void(__cdecl *object_function)(ObjectMaster *_this), char *name), 0x00731E00);
-FunctionPointer(void, SetChaoDebugFunction_Enabled, (void(__cdecl *object_function)(ObjectMaster *_this), char *name), 0x00731E40);
+// TODO: Move this stuff to the mod loader?
 DataPointer(int, ChaoDebug_EntryCount, 0x03CE01A8);
 DataPointer(char, ChaoDebug_Buttons, 0x03B0E35C);	// Used for most debug menus.
 DataPointer(char, ChaoDebug_Buttons_2, 0x03B0E3B0); // Used for the SHAPE debug menu.
 DataArray(ChaoDebugFunction, ChaoDebugFunctions, 0x03CDF5A0, 768);
-VoidFunc(EnableChao, 0x00731CD0);
-VoidFunc(DisableChao, 0x00731CE0);
-FunctionPointer(Bool, IsChaoEnabled, (void), 0x00731CF0);
-FunctionPointer(int, GetCurrentChaoStage, (void), 0x00715140);
-FunctionPointer(ObjectMaster*, GetChaoObject, (short idk, short index), 0x0071A1F0);
 
 static ObjectMaster dummy = {};
 static ChaoData1 debugData = {};
@@ -55,6 +55,7 @@ extern "C"
 		assert(sizeof(ChaoData1) == 0x1D88);
 		WriteJump(SetChaoDebugFunction_Disabled, SetChaoDebugFunction_Enabled);
 		dummy.Data1 = (CharObj1*)&debugData;
+		WriteJump((void*)0x0073202B, RegisterDebugFunctions_Hook);
 	}
 
 	EXPORT void OnInput()

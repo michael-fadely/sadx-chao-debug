@@ -24,12 +24,21 @@
     <ClInclude Include="ChaoEnums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CustomDebug.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FunctionPointers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="chao-debug.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomDebug.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

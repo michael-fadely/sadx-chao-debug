@@ -160,10 +160,13 @@
   <ItemGroup>
     <ClInclude Include="ChaoEnums.h" />
     <ClInclude Include="ChaoStructs.h" />
+    <ClInclude Include="CustomDebug.h" />
+    <ClInclude Include="FunctionPointers.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="chao-debug.cpp" />
+    <ClCompile Include="CustomDebug.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
