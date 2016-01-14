@@ -6,66 +6,60 @@
 
 #include "CustomDebug.h"
 
-void __cdecl MouthTex(ObjectMaster* _this)
+static inline ChaoData1* GetChaoData1(ObjectMaster* debug)
 {
-	ObjectMaster* chao = GetChaoObject(0, ((EntityData1*)_this->Data1)->field_14);
-	EntityData1* debug = (EntityData1*)_this->Data1;
-	ChaoDataBase* data = ((ChaoData1*)chao->Data1)->ChaoDataBase_ptr;
-
-	int buttons = ControllerPointers[2]->PressedButtons;
-
-	if (buttons & Buttons_B)
-	{
-		ChaoDebug_MenuBack(_this);
-		return;
-	}
-
-	DisplayDebugStringFormatted(NJM_LOCATION(16, 16), "MOUTH: %02d", data->MouthType);
-
-	if (buttons & Buttons_Left && --data->MouthType < 0)
-		data->MouthType = ChaoMouth_SquigglyMoustache2;
-
-	if (buttons & Buttons_Right)
-		++data->MouthType %= ChaoMouth_SquigglyMoustache2 + 1;
-
-	if (buttons & (Buttons_Left | Buttons_Right))
-		ResetChao(chao, data->Type);
+	return ((ChaoData1*)GetChaoObject(0, ((EntityData1*)debug->Data1)->field_14)->Data1);
 }
 
-void __cdecl EyeTex(ObjectMaster* _this)
+static inline ChaoDataBase* GetChaoData(ObjectMaster* debug)
 {
-	ObjectMaster* chao = GetChaoObject(0, ((EntityData1*)_this->Data1)->field_14);
-	EntityData1* debug = (EntityData1*)_this->Data1;
-	ChaoDataBase* data = ((ChaoData1*)chao->Data1)->ChaoDataBase_ptr;
-
-	int buttons = ControllerPointers[2]->PressedButtons;
-
-	if (buttons & Buttons_B)
-	{
-		ChaoDebug_MenuBack(_this);
-		return;
-	}
-
-	DisplayDebugStringFormatted(NJM_LOCATION(16, 16), "EYES: %02d", data->EyeType);
-
-	if (buttons & Buttons_Left && --data->EyeType < 0)
-		data->EyeType = ChaoEyes_YellowChaos;
-
-	if (buttons & Buttons_Right)
-		++data->EyeType %= ChaoEyes_YellowChaos + 1;
-
-	if (buttons & (Buttons_Left | Buttons_Right))
-		ResetChao(chao, data->Type);
+	return GetChaoData1(debug)->ChaoDataBase_ptr;
 }
 
-static inline const char* GetOnOff(bool b)
+static inline const char* GetOnOff(char b)
 {
-	return b ? "ON" : "OFF";
+	return b == 1 ? "ON" : "OFF";
 }
 
 static inline void SetSelectColor(int selection, int target)
 {
 	SetDebugFontColor((selection == target) ? 0xFFFF9F00 : 0xFFFFFFFF);
+}
+
+
+void __cdecl Cycle(ObjectMaster* _this, const char* name, int min, int max, char& value)
+{
+	ObjectMaster* chao = GetChaoObject(0, ((EntityData1*)_this->Data1)->field_14);
+
+	int buttons = ControllerPointers[2]->PressedButtons;
+
+	if (buttons & Buttons_B)
+	{
+		ChaoDebug_MenuBack(_this);
+		return;
+	}
+
+	DisplayDebugStringFormatted(NJM_LOCATION(16, 16), "%s: %02d", name, value);
+
+	if (buttons & Buttons_Left && --value < min)
+		value = max;
+
+	if (buttons & Buttons_Right)
+		++value %= max + 1;
+
+	if (buttons & (Buttons_Left | Buttons_Right))
+		ResetChao(chao, ((ChaoData1*)chao->Data1)->ChaoDataBase_ptr->Type);
+}
+
+void __cdecl MouthTex(ObjectMaster* _this)
+{
+	Cycle(_this, "MOUTH", ChaoMouth_None, ChaoMouth_SquigglyMoustache2, GetChaoData(_this)->MouthType);
+}
+
+void __cdecl EyeTex(ObjectMaster* _this)
+{
+	Cycle(_this, "EYES", ChaoEyes_Normal, ChaoEyes_YellowChaos, GetChaoData(_this)->EyeType);
+
 }
 
 void __cdecl ColorFlags(ObjectMaster* _this)
@@ -115,28 +109,8 @@ void __cdecl ColorFlags(ObjectMaster* _this)
 
 void __cdecl Sphere(ObjectMaster* _this)
 {
-	ObjectMaster* chao = GetChaoObject(0, ((EntityData1*)_this->Data1)->field_14);
-	EntityData1* debug = (EntityData1*)_this->Data1;
-	ChaoDataBase* data = ((ChaoData1*)chao->Data1)->ChaoDataBase_ptr;
+	Cycle(_this, "SPHERE", ChaoEmotiball_Normal, ChaoEmotiball_None, GetChaoData(_this)->BallType);
 
-	int buttons = ControllerPointers[2]->PressedButtons;
-
-	if (buttons & Buttons_B)
-	{
-		ChaoDebug_MenuBack(_this);
-		return;
-	}
-
-	DisplayDebugStringFormatted(NJM_LOCATION(16, 16), "SPHERE: %02d", data->BallType);
-
-	if (buttons & Buttons_Left && --data->BallType < 0)
-		data->BallType = ChaoEmotiball_None;
-
-	if (buttons & Buttons_Right)
-		++data->BallType %= ChaoEmotiball_None + 1;
-
-	if (buttons & (Buttons_Left | Buttons_Right))
-		ResetChao(chao, data->Type);
 }
 
 void __cdecl RegisterCustomFunctions()
