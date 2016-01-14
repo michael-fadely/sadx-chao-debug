@@ -1,4 +1,25 @@
 // TODO: Fix shape drawing.
+/*
+	The following are menus usable in the SADX Preview prototype
+	that are missing from SADX PC:
+		BUYO
+		MOVE
+		MTN CKECK (complete with typo)
+		EYE TEX (re-implemented)
+		EYE ANG
+		MOUTH TEX (re-implemented)
+		JEWEL (might be equivalent to ENV MAP)
+		MUSIC
+		STG SE
+		C SWITCH
+		W SWITCH
+		GARDEN FLAG
+		RACE FLAG
+		MUSIC FLAG
+		TOY FLAG
+		FREE CAM
+*/
+
 #include "stdafx.h"
 
 #include <SADXModLoader.h>

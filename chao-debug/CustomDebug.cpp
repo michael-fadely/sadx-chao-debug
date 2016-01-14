@@ -119,7 +119,6 @@ void __cdecl RegisterCustomFunctions()
 	SetChaoDebugFunction_Enabled(EyeTex,		"* EYE TEX");
 	SetChaoDebugFunction_Enabled(ColorFlags,	"* COLOR FLAGS");
 	SetChaoDebugFunction_Enabled(Sphere,		"* SPHERE");
-	return;
 }
 
 void __declspec(naked) RegisterDebugFunctions_Hook()

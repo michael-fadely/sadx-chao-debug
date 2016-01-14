@@ -2,6 +2,7 @@
 
 #include <SADXModLoader.h>
 
+// TODO: Move this stuff to the mod loader?
 FunctionPointer(Bool, IsChaoEnabled, (void), 0x00731CF0);
 FunctionPointer(ObjectMaster*, GetChaoObject, (short idk, short index), 0x0071A1F0);
 FunctionPointer(int, GetCurrentChaoStage, (void), 0x00715140);
