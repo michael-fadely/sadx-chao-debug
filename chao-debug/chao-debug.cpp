@@ -24,7 +24,6 @@
 
 #include <SADXModLoader.h>
 #include <string>
-#include <cassert>
 
 #include "FunctionPointers.h"
 #include "CustomDebug.h"
@@ -72,8 +71,6 @@ extern "C"
 	EXPORT ModInfo SADXModInfo = { ModLoaderVer };
 	EXPORT void Init()
 	{
-		assert(sizeof(EntityData1) == 0x40);
-		assert(sizeof(ChaoData1) == 0x1D88);
 		WriteJump(SetChaoDebugFunction_Disabled, SetChaoDebugFunction_Enabled);
 		dummy.Data1 = (CharObj1*)&debugData;
 		WriteJump((void*)0x0073202B, RegisterDebugFunctions_Hook);

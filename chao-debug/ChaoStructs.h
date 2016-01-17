@@ -311,3 +311,7 @@ struct ChaoDebugFunction
 	const char *Name;
 };
 #pragma pack(pop)
+
+static_assert(sizeof(EntityData1) == 0x40, "EntityData1 size discrepancy.");
+static_assert(sizeof(ChaoData1) == 0x1D88, "ChaoData1 size discrepancy.");
+
