@@ -31,7 +31,6 @@
 
 #define EXPORT __declspec(dllexport)
 
-// TODO: Move this stuff to the mod loader?
 DataPointer(int, ChaoDebug_EntryCount, 0x03CE01A8);
 DataPointer(char, ChaoDebug_Buttons, 0x03B0E35C);	// Used for most debug menus.
 DataPointer(char, ChaoDebug_Buttons_2, 0x03B0E3B0); // Used for the SHAPE debug menu.
