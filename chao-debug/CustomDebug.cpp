@@ -1,35 +1,33 @@
 #include "stdafx.h"
 
 #include <SADXModLoader.h>
-#include "ChaoStructs.h"
-#include "FunctionPointers.h"
 
 #include "CustomDebug.h"
 
-static inline ChaoData1* GetChaoData1(ObjectMaster* debug)
+inline ChaoData1* GetChaoData1(ObjectMaster* debug)
 {
-	return ((ChaoData1*)GetChaoObject(0, ((EntityData1*)debug->Data1)->field_14)->Data1);
+	return (ChaoData1*)GetChaoObject(0, ((EntityData1*)debug->Data1)->Rotation.x)->Data1;
 }
 
-static inline ChaoDataBase* GetChaoData(ObjectMaster* debug)
+inline ChaoDataBase* GetChaoData(ObjectMaster* debug)
 {
 	return GetChaoData1(debug)->ChaoDataBase_ptr;
 }
 
-static inline const char* GetOnOff(char b)
+inline const char* GetOnOff(char b)
 {
 	return b == 1 ? "ON" : "OFF";
 }
 
-static inline void SetSelectColor(int selection, int target)
+inline void SetSelectColor(int selection, int target)
 {
-	SetDebugFontColor((selection == target) ? 0xFFFF9F00 : 0xFFFFFFFF);
+	SetDebugFontColor(selection == target ? 0xFFFF9F00 : 0xFFFFFFFF);
 }
 
 
 void __cdecl Cycle(ObjectMaster* _this, const char* name, int min, int max, char& value)
 {
-	ObjectMaster* chao = GetChaoObject(0, ((EntityData1*)_this->Data1)->field_14);
+	ObjectMaster* chao = GetChaoObject(0, ((EntityData1*)_this->Data1)->Rotation.x);
 
 	int buttons = ControllerPointers[2]->PressedButtons;
 
@@ -64,7 +62,7 @@ void __cdecl EyeTex(ObjectMaster* _this)
 
 void __cdecl ColorFlags(ObjectMaster* _this)
 {
-	ObjectMaster* chao = GetChaoObject(0, ((EntityData1*)_this->Data1)->field_14);
+	ObjectMaster* chao = GetChaoObject(0, ((EntityData1*)_this->Data1)->Rotation.x);
 	EntityData1* debug = (EntityData1*)_this->Data1;
 	ChaoDataBase* data = ((ChaoData1*)chao->Data1)->ChaoDataBase_ptr;
 

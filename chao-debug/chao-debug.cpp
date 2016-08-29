@@ -25,9 +25,7 @@
 #include <SADXModLoader.h>
 #include <string>
 
-#include "FunctionPointers.h"
 #include "CustomDebug.h"
-#include "ChaoStructs.h"
 
 #define EXPORT __declspec(dllexport)
 
@@ -36,12 +34,14 @@ DataPointer(char, ChaoDebug_Buttons, 0x03B0E35C);	// Used for most debug menus.
 DataPointer(char, ChaoDebug_Buttons_2, 0x03B0E3B0); // Used for the SHAPE debug menu.
 DataArray(ChaoDebugFunction, ChaoDebugFunctions, 0x03CDF5A0, 768);
 
-static ObjectMaster dummy = {};
+static ObjectMaster dummy  = {};
 static ChaoData1 debugData = {};
+
 static bool debugControlEnabled = false;
-static bool debugMenuEnabled = false;
-static int selection = 0;
-static int menu = -1;
+static bool debugMenuEnabled    = false;
+static int selection            = 0;
+static int menu                 = -1;
+
 static const std::string sel_icon = "-> ";
 
 void SetDebugControl(bool enable)
@@ -71,7 +71,7 @@ extern "C"
 	EXPORT void Init()
 	{
 		WriteJump(SetChaoDebugFunction_Disabled, SetChaoDebugFunction_Enabled);
-		dummy.Data1 = (CharObj1*)&debugData;
+		dummy.Data1 = (EntityData1*)&debugData;
 		WriteJump((void*)0x0073202B, RegisterDebugFunctions_Hook);
 	}
 
@@ -145,7 +145,6 @@ extern "C"
 			}
 		}
 
-		int rows = HorizontalResolution / (int)DebugFontSize;
 		int columns = VerticalResolution / (int)DebugFontSize;
 		int buttons = ChaoDebug_Buttons;
 		bool holdingChao = player->ObjectHeld != nullptr;
@@ -154,16 +153,16 @@ extern "C"
 		{
 			ObjectMaster* chao = player->ObjectHeld;
 			ChaoData1* data1 = (ChaoData1*)chao->Data1;
-			debugData.entity.field_14 = data1->entity.Index;
+			debugData.entity.Rotation.x = data1->entity.Index;
 		}
 		else if (buttons & Buttons_Left)
 		{
-			if (--debugData.entity.field_14 < 0)	// TODO: GetChaoCount
-				debugData.entity.field_14 = 23;
+			if (--debugData.entity.Rotation.x < 0)	// TODO: GetChaoCount
+				debugData.entity.Rotation.x = 23;
 		}
 		else if (buttons & Buttons_Right)
 		{
-			++debugData.entity.field_14 %= 24; 	// TODO: GetChaoCount
+			++debugData.entity.Rotation.x %= 24; 	// TODO: GetChaoCount
 		}
 
 		if (buttons & Buttons_Up)
@@ -190,7 +189,7 @@ extern "C"
 			return;
 		}
 
-		ObjectMaster* chao = GetChaoObject(0, debugData.entity.field_14);
+		ObjectMaster* chao = GetChaoObject(0, debugData.entity.Rotation.x);
 		bool isNullChao =
 			chao == nullptr || chao->Data1 == nullptr || ((ChaoData1*)chao->Data1)->ChaoDataBase_ptr == nullptr;
 
@@ -198,7 +197,7 @@ extern "C"
 			SetDebugFontColor(isNullChao ? 0xFFBF0000 : 0xFF00BF00);
 		else
 			SetDebugFontColor(0xFFBFBFBF);
-		DisplayDebugStringFormatted(NJM_LOCATION(6, (columns / 4) - 2), "< CHAO INDEX: %02d >", debugData.entity.field_14);
+		DisplayDebugStringFormatted(NJM_LOCATION(6, (columns / 4) - 2), "< CHAO INDEX: %02d >", debugData.entity.Rotation.x);
 		SetDebugFontColor(lastColor);
 
 		if (isNullChao)

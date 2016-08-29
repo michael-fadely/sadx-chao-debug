@@ -18,16 +18,10 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ChaoStructs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ChaoEnums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CustomDebug.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FunctionPointers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
